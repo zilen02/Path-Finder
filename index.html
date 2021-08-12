@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+
+    <!-- Bootstrap CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <!-- JavaScript Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+    <!-- P5.js  -->
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"
+    ></script>
+    <title>Path Finder</title>
+  </head>
+  <body>
+    <div class="container-fluid w-100 m-0 p-0" style="height: 100vh">
+      <nav
+        class="navbar navbar-expand-lg navbar-light mb-4 align-items-center"
+        style="background-color: #eaf1f8"
+      >
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <h4>Path Finder</h4>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon text-light"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse justify-content-center"
+            id="navbarSupportedContent"
+          >
+            <ul class="navbar-nav mr-auto nav-fill align-items-center w-75">
+              <li class="nav-item dropdown active">
+                <a
+                  class="nav-link dropdown-toggle text-dark"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Algorithms
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#" onclick="dropdown(event)"
+                    >A* Search</a
+                  >
+                  <a class="dropdown-item" href="#" onclick="dropdown(event)"
+                    >Greedy Best First Search</a
+                  >
+                  <a class="dropdown-item" href="#" onclick="dropdown(event)"
+                    >Dijkstra</a
+                  >
+                  <a class="dropdown-item" href="#" onclick="dropdown(event)"
+                    >Breadth First Search</a
+                  >
+                  <a class="dropdown-item" href="#" onclick="dropdown(event)"
+                    >Depth First Search</a
+                  >
+                </div>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="btn btn-dark px-3 my-2 my-sm-0"
+                  id="startBtn"
+                  type="submit"
+                >
+                  Start
+                </button>
+              </li>
+              <li class="nav-item">
+                <a
+                  id="walls"
+                  class="nav-link text-dark"
+                  href="#"
+                  onclick="putWalls()"
+                  >Throw Walls</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" href="#" onclick="resetCanvas()"
+                  >Clear</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container-fluid">
+        <div class="row text-center">
+          <div class="col-lg-2 col-sm-6">
+            <div style="font-size: 1.4rem">
+              <span
+                class="square"
+                style="
+                  height: 20px;
+                  width: 20px;
+                  background-color: #1a3da6;
+                  display: inline-block;
+                  margin-right: 6px;
+                "
+              ></span>
+              Source
+            </div>
+          </div>
+          <div class="col-lg-2 col-sm-6">
+            <div style="font-size: 1.4rem">
+              <span
+                class="square"
+                style="
+                  height: 20px;
+                  width: 20px;
+                  background-color: #fd1036;
+                  display: inline-block;
+                  margin-right: 6px;
+                "
+              ></span>
+              Destination
+            </div>
+          </div>
+          <div class="col-lg-2 col-sm-6">
+            <div style="font-size: 1.4rem">
+              <span
+                class="square"
+                style="
+                  height: 20px;
+                  width: 20px;
+                  background-color: #708090;
+                  display: inline-block;
+                  margin-right: 6px;
+                "
+              ></span>
+              Walls
+            </div>
+          </div>
+          <div class="col-lg-2 col-sm-6">
+            <div style="font-size: 1.4rem">
+              <span
+                class="square"
+                style="
+                  height: 20px;
+                  width: 20px;
+                  background-color: #ccffcc;
+                  display: inline-block;
+                  margin-right: 6px;
+                "
+              ></span>
+              Unxplored Cells
+            </div>
+          </div>
+          <div class="col-lg-2 col-sm-6">
+            <div style="font-size: 1.4rem">
+              <span
+                class="square"
+                style="
+                  height: 20px;
+                  width: 20px;
+                  background-color: #fad4d8;
+                  display: inline-block;
+                  margin-right: 6px;
+                "
+              ></span>
+              Explored Cells
+            </div>
+          </div>
+          <div class="col-lg-2 col-sm-6">
+            <div style="font-size: 1.4rem">
+              <span
+                class="square"
+                style="
+                  height: 5px;
+                  width: 60px;
+                  background-color: #c67aff;
+                  display: inline-block;
+                  margin-right: 6px;
+                "
+              ></span>
+              Path
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center mt-3" style="min-height: 60px">
+        <div class="col text-center">
+          <span id="message" style="font-style: italic"></span>
+        </div>
+      </div>
+
+      <div
+        class="area"
+        style="
+          margin-top: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        "
+      >
+        <div id="sketch01" style="position: relative"></div>
+      </div>
+    </div>
+
+    <!-- Java scripts -->
+    <script src="./src/variable.js"></script>
+    <script src="./src/setUp.js"></script>
+    <script src="./src/reset.js"></script>
+    <script src="./src/Cell.js"></script>
+    <script src="./src/mouseOperations.js"></script>
+    <script src="./src/aStar.js"></script>
+    <script src="./src/gBFS.js"></script>
+    <script src="./src/BFS.js"></script>
+    <script src="./src/DFS.js"></script>
+    <script src="./src/dijkstra.js"></script>
+    <script src="./src/showCell.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
